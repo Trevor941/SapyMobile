@@ -1,0 +1,243 @@
+﻿Build1=SapyLiveMobile,b4a.SapyLiveSystem
+Build2=New_1,b4a.SapyLiveSystem
+File1=DialogLogin.bal
+File10=MainMenuPage.bal
+File11=MainPage.bal
+File12=sapy.png
+File13=StockTransferPage.bal
+File14=TruckControlSheet.bal
+File2=DispatchPlanDetailPage.bal
+File3=DispatchPlanLinking.bal
+File4=DrawStockPage.bal
+File5=driverdeliverys.bal
+File6=FrmPrintPopUp.bal
+File7=grvHeaderPage.bal
+File8=GrvStockDetailLinePage.bal
+File9=GrvStockMainPage.bal
+FileGroup1=Default Group
+FileGroup10=Default Group
+FileGroup11=Default Group
+FileGroup12=Default Group
+FileGroup13=Default Group
+FileGroup14=Default Group
+FileGroup2=Default Group
+FileGroup3=Default Group
+FileGroup4=Default Group
+FileGroup5=Default Group
+FileGroup6=Default Group
+FileGroup7=Default Group
+FileGroup8=Default Group
+FileGroup9=Default Group
+Group=Default Group
+Library1=b4xpages
+Library10=phone
+Library11=reflection
+Library12=runtimepermissions
+Library13=sql
+Library14=ultimatelistview
+Library15=xcustomlistview
+Library16=xml2map
+Library17=xui
+Library18=xui views
+Library19=ss_base64convert
+Library2=byteconverter
+Library3=camera2
+Library4=core
+Library5=javaobject
+Library6=jpegutils
+Library7=json
+Library8=okhttp
+Library9=okhttputils2
+ManifestCode='This code will be applied to the manifest file during compilation.~\n~'You do not need to modify it in most cases.~\n~'See this link for for more information: https://www.b4x.com/forum/showthread.php?p=78136~\n~AddManifestText(~\n~<uses-sdk android:minSdkVersion="21" android:targetSdkVersion="33"/>~\n~<supports-screens android:largeScreens="true" ~\n~    android:normalScreens="true" ~\n~    android:smallScreens="true" ~\n~    android:anyDensity="true"/>)~\n~SetApplicationAttribute(android:icon, "@drawable/icon")~\n~SetApplicationAttribute(android:label, "$LABEL$")~\n~CreateResourceFromFile(Macro, Themes.LightTheme)~\n~SetApplicationAttribute(android:usesCleartextTraffic, "true")~\n~'End of default text.~\n~AddApplicationText(~\n~  <provider~\n~  android:name="android.support.v4.content.FileProvider"~\n~  android:authorities="$PACKAGE$.provider"~\n~  android:exported="false"~\n~  android:grantUriPermissions="true">~\n~  <meta-data~\n~  android:name="android.support.FILE_PROVIDER_PATHS"~\n~  android:resource="@xml/provider_paths"/>~\n~  </provider>~\n~)~\n~CreateResource(xml, provider_paths,~\n~   <files-path name="name" path="shared" />~\n~)~\n~
+Module1=AddItemsToDispatchPlan
+Module10=LinkDispatchPlanToStock
+Module11=MainMenu
+Module12=Starter
+Module13=StockTransfer
+Module14=TruckSheets
+Module2=|relative|..\B4XMainPage
+Module3=CamEx2
+Module4=DispatchPlanDetails
+Module5=DrawRawMaterial
+Module6=FileProvider
+Module7=GrvHeaderInfo
+Module8=GrvStockDetailLine
+Module9=GrvStockIn
+NumberOfFiles=14
+NumberOfLibraries=19
+NumberOfModules=14
+Version=12.8
+@EndOfDesignText@
+#Region  Project Attributes 
+	#ApplicationLabel: Sapy Live Mobile
+	#VersionCode: 1
+	#VersionName: 1
+	'SupportedOrientations possible values: unspecified, landscape or portrait.
+	#SupportedOrientations: portrait
+	#CanInstallToExternalStorage: False
+#End Region
+
+#Region  Activity Attributes 
+	#FullScreen: False
+	#IncludeTitle: True
+#End Region
+
+'#BridgeLogger: True
+
+Sub Process_Globals
+	Public ActionBarHomeClicked As Boolean
+	'http://41.203.1.50:20579/
+	'Public Server As String = "http://41.203.1.50:20579"
+	'Public Server As String = "http://192.168.88.2:5270"
+	'http://192.168.88.2:5270/
+	'Public Server As String = "http://192.168.88.21:5270"
+	Public Server As String = "http://sapy.dyndns.org:51758"
+	Public Token As String
+	Public UserLogin As String
+	Public IMENo As String
+	Dim Awake As PhoneWakeState
+	Dim PoListypel As List
+	Dim CurrentPoLine As Int
+	Dim BitmapPicture As Bitmap
+	Public PictureContentType As String
+	Type PoListype (fQtyChange  As Double, invTotalIncl  As  Double, Code As String, invDisc  As Double , dueDate  As String, orderNum  As String, description_1  As String , invDiscAmnt  As Double, extOrderNum  As String, invTotExcl As Double, autoIndex  As Int, InvNumber As String, fQuantity As Double,name  As String, fQtyToProcess  As Double, IdInvoiceLines  As Int,deliveryDate  As String ,fQtyLastProcess  As Double, invDate  As String , orderDate As String, account As String, fUnitPriceIncl As Double,fUnitPriceExcl As Double, OrdTotExcl As Double, OrdTotIncl As Double,transportCondition As Boolean, coa As Boolean, chemical As Boolean,Coapath As String,hmvTypeBlock As Boolean,biological As Boolean, physical As Boolean,allergens As Boolean,PoNotesFromMobile As String, NoOfPrints As Int , ClineNotes As String, SupplierExpiryDate As String, SupplierBatchNo As String, DamgeQty As Double,hmvTyreBlock As Boolean, DCLink As Int, Printed As Boolean )
+	Type TruckSheetType (InvoiceNo  As String, ID  As  Int, Code As String,  qty As Double )
+	Type PictureUpload(FileName As String, Content As Bitmap, InvoiceId As Int, IdInvoiceLines As Int,DocumentType As String,CustVendor As String,POorInvoice As String)
+		Public OrderList As List
+		Public TruckControlSheetList As List
+	Public  x As OrderInfo
+	Private xui As XUI
+	Dim Base64Con As Base64Convert
+End Sub
+
+Sub Globals
+
+	
+End Sub
+
+Sub Activity_Create(FirstTime As Boolean)
+	Awake.KeepAlive(True)
+	Dim pm As B4XPagesManager
+	pm.Initialize(Activity)
+	
+End Sub
+
+'Template version: B4A-1.01
+#Region Delegates
+
+Sub Activity_ActionBarHomeClick
+	ActionBarHomeClicked = True
+	B4XPages.Delegate.Activity_ActionBarHomeClick
+	ActionBarHomeClicked = False
+End Sub
+
+Sub Activity_KeyPress (KeyCode As Int) As Boolean
+	Return B4XPages.Delegate.Activity_KeyPress(KeyCode)
+End Sub
+
+Sub Activity_Resume
+	B4XPages.Delegate.Activity_Resume
+End Sub
+
+Sub Activity_Pause (UserClosed As Boolean)
+	B4XPages.Delegate.Activity_Pause
+End Sub
+
+Sub Activity_PermissionResult (Permission As String, Result As Boolean)
+	B4XPages.Delegate.Activity_PermissionResult(Permission, Result)
+End Sub
+
+Sub Create_Menu (Menu As Object)
+	B4XPages.Delegate.Create_Menu(Menu)
+End Sub
+
+Public Sub  PostPicture(a As PictureUpload)
+	
+'Dim bmp As Bitmap = a.Content
+	
+	Dim map1 As Map
+	map1.Initialize
+	map1.Clear
+	map1.Put("ContentType",a.DocumentType)
+	map1.Put("FileName", a.FileName)
+	Dim scommand As String
+	
+	
+	
+	
+	Dim bmp As B4XBitmap  =a.Content
+	'Dim base() As Byte = ImageToBytes(a.Content)
+	Dim out As OutputStream = File.OpenOutput(xui.DefaultFolder, "1.jpg", False)
+	bmp.WriteToStream(out, 100, "JPEG")
+	out.Close
+	Base64Con.Initialize()
+	Dim base As String = Base64Con.EncodeFromImage(xui.DefaultFolder, "1.jpg")
+	
+	'File.Delete(xui.DefaultFolder, "1.jpg")
+	map1.Put("id",0)
+
+	map1.Put("content",base)
+	map1.Put("InvoiceId", a.InvoiceId)
+	map1.Put("IdInvoiceLines", a.IdInvoiceLines)
+	map1.Put("DocumentType", a.DocumentType)
+	map1.Put("CreatedBy", UserLogin)
+	map1.Put("POorInvoice",a.POorInvoice)
+	map1.Put("CustVendor",a.CustVendor)
+	
+	
+	
+	Dim JSON As JSONGenerator
+	JSON.Initialize(map1)
+ 
+	Dim data As String =   JSON.ToPrettyString(1)
+
+	Dim j As HttpJob
+	j.Initialize("", Me) 'name is empty as it is no longer needed
+	Dim strwww As String =Server
+	'Dim k As String =  "Policy?PolicyNumber=" & txtLookupPolocy.Text
+
+	Dim strPolocy As String
+	Log("After jdownload")
+	
+	strwww =Server & "/api/Attachments"
+	
+	
+	j.PostString( strwww,data)
+	'j.GetRequest.SetContentType("application/json")
+	J.GetRequest.SetHeader("Authorization","Bearer " & Token)
+	j.GetRequest.SetContentType("application/json")
+	
+	
+	Wait For (j) JobDone(j As HttpJob)
+	If j.Success Then
+		ToastMessageShow("Picture Uploaded",True)
+	End If
+	
+	
+End Sub
+
+Public Sub ImageToBytes(Image As Bitmap) As Byte()
+	If Image.IsInitialized Then
+		Dim out As OutputStream
+		out.InitializeToBytesArray(0)
+		Image.WriteToStream(out, 100, "JPEG")
+		out.Close
+		Return out.ToBytesArray
+	Else
+		Return Null
+	End If
+End Sub
+
+
+
+
+#if Java
+public boolean _onCreateOptionsMenu(android.view.Menu menu) {
+	 processBA.raiseEvent(null, "create_menu", menu);
+	 return true;
+	
+}
+#End If
+#End Region
+
+'Program code should go into B4XMainPage and other pages.
